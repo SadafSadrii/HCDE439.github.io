@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Portfolio</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="fade-in">
+
+                <div class="header">
+                    <h1>Library</h1>
+                    <p>
+                        Picture of the circuit!
+                    </p>
+                    <p>
+                    <img src="LibCircuit.jpg" width=400></a>
+                    </p>
+                    <p>
+                        gif of the circuit!
+                    </p>
+                    <p>
+                        <img src="IMG_5866.gif" width=400></a>
+                        </p>
+                        <p>
+                            Schematic of the circuit!
+                        </p>
+                        <p>
+                            <img src="LibSchematic.jpg" width=400></a>
+                            </p>
+
+                    <pre><code>
+                        #include <Servo.h> //import the servo library
+
+							#include<Servo.h> //include servo lib
+                                #include<CapacitiveSensor.h> // include capacitive sensor lib
+                                
+                                Servo myservo;
+                                CapacitiveSensor   sensor = CapacitiveSensor(2,4); // 1M resistor between pins 4 & 8, pin 8 is sensor 
+                                const int SERVO_PIN        = 9; // Arduino pin connected to servo motor's pin
+                                
+                                Servo servo; // create servo object to control a servo
+                                
+                                // variables will change:
+                                int angle = 0;         // the current angle of servo motor
+                                int lastTouchState;    // the previous state of touch sensor
+                                int currentTouchState; // the current state of touch sensor
+                                
+                                void setup() {
+                                  Serial.begin(9600);               // initialize serial
+                                  pinMode(2, INPUT); // set arduino pin to input mode
+                                  servo.attach(SERVO_PIN);          // attaches the servo on pin 9 to the servo object
+                                
+                                  servo.write(angle);
+                                  currentTouchState = digitalRead(2);
+                                }
+                                
+                                void loop() {
+                                  lastTouchState    = currentTouchState;             // save the last state
+                                  currentTouchState = digitalRead(2); // read new state
+                                
+                                  if(lastTouchState == LOW && currentTouchState == HIGH) {
+                                    Serial.println("The sensor is touched");
+                                
+                                    // change angle of servo motor
+                                    if(angle == 0)
+                                      angle = 90;
+                                    else
+                                    if(angle == 90)
+                                      angle = 0;
+                                
+                                    // control servo motor arccoding to the angle
+                                    servo.write(angle);
+                                  }
+                                }
+							}
