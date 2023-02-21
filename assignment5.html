@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<title>Portfolio</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<!-- <link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript> -->
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="fade-in">
+
+                <div class="header">
+                    <h1>High Voltage and Transistors</h1>
+                    <p>
+                        Picture of the circuit!
+                    </p>
+                    <p>
+                    <img src="images/Load.jpg" width=400></a>
+                    </p>
+                    <p>
+                        gif of the circuit!
+                    </p>
+                    <p>
+                        <img src="images/Load.gif" width=400></a>
+                        </p>
+                        <p>
+                            Schematic of the circuit!
+                        </p>
+                        <p>
+                            <img src="images/LoadSchematic.jpg" width=400></a>
+                            </p>
+
+                    <pre><code>
+                       
+
+							
+int trig= 12; //Connect trig pin of the ultrasonic sensor to pin 12
+int echo = 13; //Connect echo pin of the ultrasonic sensor to pin 13
+int enablePin = 11; //Connect enablePin pin of the H-bridge to pin 11
+int in1Pin = 10; //Connect in1 of the H-bridge to pin 10
+int in2Pin = 9;  //Connect in2 of the H-bridge to pin 9
+
+
+void setup()
+{
+    Serial.begin(9600);
+    pinMode(trig , OUTPUT); //Set trig as an output
+    pinMode(echo , INPUT); //Set echo as an input
+    pinMode(in1Pin, OUTPUT); //Set in1Pin as an output
+    pinMode(in2Pin, OUTPUT); //Set in2Pin as an output
+    pinMode(enablePin, OUTPUT); //Set enablePin as an output
+
+}
+
+void loop()
+{
+    digitalWrite(trig , HIGH); // Set trig to high
+    delayMicroseconds(1000); // Wait 0.001 S
+    digitalWrite(trig , LOW); // Set rig to low
+  
+  int duration = pulseIn(echo , HIGH); // calculate duration
+  int distance = (duration / 2) / 28.5 ;// calculate distance in CM
+  
+  if ( distance < 50 ) {.   // if the distance was les than 50 cm turn the DC motor to right
+      Serial.print(distance); // print the distance information
+      digitalWrite(enablePin, HIGH);
+      digitalWrite(in1Pin, LOW);
+      digitalWrite(in2Pin , HIGH);
+      Serial.println("cm   MOTOR START"); // write the distance in cm and add MOTOR START
+      delay(1000); // wait for 1s
+  }
+  else { // otherwise turn the motor off
+      Serial.print(distance);  // print the distance information
+      digitalWrite(enablePin, HIGH); 
+      digitalWrite(in1Pin, LOW);
+      digitalWrite(in2Pin , LOW);
+      Serial.println("cm   MOTOR STOP"); // write the distance in cm and add MOTOR STOP
+      delay(1000); // wait for 1s
+  }
+}
+                              
