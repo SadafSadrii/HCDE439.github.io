@@ -66,7 +66,7 @@
                           
                           if ( distance < 50 ) {   // if the distance was les than 50 cm turn the DC motor to right
                               Serial.print(distance); // print the distance information
-                              analogWrite (enablePin, 120); // run the motor in almost half speed
+                              analogWrite (enablePin, 120); // run the motor in this speed
                               digitalWrite(in1Pin, LOW); //set to low
                               digitalWrite(in2Pin, HIGH); //set to high
                               Serial.println("cm   MOTOR START"); // write the distance in cm and add MOTOR START
@@ -74,7 +74,7 @@
                           }
                           else { // otherwise turn the motor off
                              Serial.print(distance);  // print the distance information
-                             analogWrite (enablePin, 256); // // don't run the motor
+                             analogWrite (enablePin, 256); 
                              digitalWrite(in1Pin, LOW); // set to low
                              digitalWrite(in2Pin, LOW); // set to low
                              Serial.println("cm   MOTOR STOP"); // write the distance in cm and add MOTOR STOP
