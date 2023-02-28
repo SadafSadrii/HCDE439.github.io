@@ -1,0 +1,187 @@
+<html>
+	<head>
+		<title>Portfolio</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<!-- <link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript> -->
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="fade-in">
+
+                <div class="header">
+                    <h1>Talking To The Web!</h1>
+                    <p>
+                        Picture of the circuit!
+                    </p>
+                    <p>
+                    <img src="images/CircuitA6.jpg" width=400></a>
+                    </p>
+                    <p>
+                        gif of the LED diming with mouse movement!
+                    </p>
+                    <p>
+                        <img src="images/LED.gif" width=400></a>
+                        </p>
+                        <p>
+                            gif of the potentiometer moving a cube on the webpage!
+                        </p>
+                        <p>
+                            <img src="images/Poten.gif" width=400></a>
+                            </p>
+                        <p>
+                            Schematic of the circuit!
+                        </p>
+                        <p>
+                            <img src="images/CircuitA6k.jpg" width=400></a>
+                            </p>
+
+                    <pre><code>
+
+
+ //P5jS code for the LED  (Borrowed from https://www.youtube.com/watch?v=yThUrgBkZ2o&t=302s)
+
+                    
+let serial; // variable for the serial object
+let bright = 0; // variable to hold the data we're sending
+let dark, light; // variables to hold the bgcolor
+
+function setup() {
+  createCanvas(512, 512);
+  // define the colors
+  dark = color(0);
+  light = color(255, 204, 0);
+
+  // serial constructor
+  serial = new p5.SerialPort();
+
+  // serial port to use - you'll need to change this
+  serial.open('/dev/tty.usbmodem101');
+
+}
+
+function drawGradient(c1, c2) {
+  noFill();
+  for (let y = 0; y < height; y++) {
+    let interp = map(y, 0, height, 0, 1);
+    let c = lerpColor(c1, c2, interp);
+    stroke(c);
+    line(0, y, width, y);
+  }
+}
+
+function draw() {
+  drawGradient(dark, light);
+  stroke(255);
+  strokeWeight(3);
+  noFill();
+  ellipse(mouseX, mouseY, 10, 10);
+}
+
+function mouseDragged(){
+ 
+  bright = floor(map(mouseY, 0, 512, 0, 255));
+  bright = constrain(bright, 0, 255);
+  serial.write(bright);
+  console.log(bright);
+}
+                       
+// Arduino Code for the LED  
+
+const int ledPin = 13;      // the pin that the LED is attached to
+
+void setup() {
+  // initialize the serial communication:
+  Serial.begin(9600);
+  // initialize the ledPin as an output:
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  int brightness;
+
+  // check if data has been sent from the computer:
+  if (Serial.available() > 0) {
+    // read the most recent byte (which will be from 0 to 255):
+    brightness = Serial.read();
+    // set the brightness of the LED:
+    analogWrite(ledPin, brightness);
+  }
+}
+							
+          
+//Code for Potentiomenter (Borrowed from https://www.youtube.com/watch?v=jsXLMm-FnSY)
+
+//P5jS code 
+
+let serial; // variable for the serial object
+let latestData = "waiting for data"; // variable to hold the data
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  // serial constructor
+  serial = new p5.SerialPort();
+
+  // serial port to use - you'll need to change this
+  serial.open('/dev/tty.usbmodem143201');
+
+  // what to do when we get serial data
+  serial.on('data', gotData);
+
+}
+
+// when data is received in the serial buffer
+
+function gotData() {
+  let currentString = serial.readLine(); // store the data in a variable
+  trim(currentString); // get rid of whitespace
+  if (!currentString) return; // if there's nothing in there, ignore it
+  console.log(currentString); // print it out
+  latestData = currentString; // save it to the global variable
+}
+
+function draw() {
+  background(0, 100, 80);
+  fill(30, 10, 0);
+  text(latestData, 10, 10); // print the data to the sketch
+
+  // in this example, we are reciving a value between 0 and 1023
+  // and using that to rotate the square
+  angleMode(DEGREES);
+  let rotDeg = map(latestData, 0, 1023, 0. ,360.);
+
+  translate(width / 2, height / 2);
+  rotate(rotDeg);
+  rectMode(CENTER);
+  rect(0, 0, 100, 100);
+
+
+}
+
+//Arduino code for the potentiometer
+
+const int potPin = A0; // pin the pot is connected to
+int potVal = 0; // variable to hold the value from the sensor
+
+void setup() {
+  
+  // initialize the serial communication:
+  Serial.begin(9600);
+  // initialize the ledPin as an output:
+  
+}
+
+void loop() {
+  // read the value of the pot and store it
+  potVal = analogRead(potPin);
+
+  // write the value out to the serial port
+  Serial.println(potVal);
+  
+  // wait a bit for between readings
+  delay(10);
+
+
+}
