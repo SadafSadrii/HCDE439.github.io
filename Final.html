@@ -1,0 +1,84 @@
+<html>
+	<head>
+		<title>Portfolio</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<!-- <link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript> -->
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="fade-in">
+
+                <div class="header">
+                    <h1>Final Projecrt!</h1>
+                    <p>
+                        Picture of the circuit (Inside of the back)!
+                    </p>
+                    <p>
+                    <img src="images/CapConnected.jpg" width=400></a>
+                    </p>
+                    <p>
+                        Picture of the circuit (Inside of the front)!
+                    </p>
+                    <p>
+                        <img src="images/Front copy.jpg.jpg" width=400></a>
+                        </p>
+                        <p>
+                            Picture of the circuit (Outside of the back)!
+                        </p>
+                        <p>
+                            <img src="images/Back copy.jpg" width=400></a>
+                            </p>
+                        <p>
+                            Schematic of the circuit!
+                        </p>
+                        <p>
+                            <img src="images/Schematics.jpg" width=400></a>
+                            </p>
+
+                            <video width="320" height="240" controls>
+                                <source src="images/HCDEFINALGIt.mp4" type="video/mp4">
+                              Your browser does not support the video tag.
+                              </video>
+
+                    <pre><code>
+
+
+                        #include <CapacitiveSensor.h>
+
+                            CapacitiveSensor cs_4_2 = CapacitiveSensor(4,2); // 1 megaohm resistor between pins 4 & 2, pin 2 is sensor pin
+                            int Speaker = 9; //connect speaker to pin 9
+                            
+                            void setup(){ //
+                            
+                            
+                            cs_4_2.set_CS_AutocaL_Millis(0xFFFFFFFF); // turn off autocalibrate on channel 1 - just as an example Serial.begin(9600);
+                            Serial.begin(9600);
+                            
+                            }
+                            
+                            void loop(){
+                            
+                            long start = millis();
+                            
+                            long total1 = cs_4_2.capacitiveSensor(30);
+                            
+                            Serial.print(millis() - start); // check on performance in milliseconds
+                            
+                            Serial.print("\t"); // tab character for debug window spacing
+                            
+                            Serial.println(total1); // print sensor output 1
+                            
+                            int thisPitch = map(total1, 20, 18000, 120, 1500);
+                            
+                            if (total1 > 90) {tone(9, thisPitch, 10);
+                            }
+                            else {
+                              noTone(9);
+                            }
+                              // play the pitch:
+                            delay(10); // arbitrary delay to limit data to serial port
+                            
+                            }
